@@ -11,9 +11,22 @@
   <link href="./image/notebook_2.gif" rel="icon" type="image/gif">
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
   <title>To Do List</title>
 </head>
 <body>
-  
+  <h1>To Do List</h1>
+  <div>
+    <h3>Date</h3>
+    <input placeholder="What needs to be done?" />
+    <button id="addBtn">Add</button>
+  </div>
+  <div>
+    <h3>Filter the Tasks by...</h3>
+    <button>All</button>
+    <button>Active</button>
+    <button>Completed</button>
+  </div>
+  <div id="tasks"></div>
 </body>
 </html>
