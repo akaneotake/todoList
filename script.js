@@ -27,6 +27,7 @@ $(document).ready(function() {
         response.tasks.forEach(function(task) {
           $('#list').append('<p data-id=' + task.id + '>' + insertInput(task.completed) + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
         });
+        $('#itemNum').html($('#list p').length);
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -48,8 +49,8 @@ $(document).ready(function() {
           }
         }),
         success: function(response, textStatus) {
-          $('#list').append('<p data-id=' + response.task.id + '><input class="checkbox active" type="checkbox" />' + response.task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           $('#newTask').val("");
+          displayTasks();
         },
         error: function(request, textStatus, errorMessage) {
           console.log(errorMessage);
@@ -66,6 +67,7 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(response, textStatus) {
         $('#list [data-id=' + id + ']').remove();
+        $('#itemNum').html($('#list p').length);
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -115,7 +117,6 @@ $(document).ready(function() {
     });
   };
 
-
   // Functions and Event Handlers
   // Get and render all tasks
   displayTasks();
@@ -158,6 +159,7 @@ $(document).ready(function() {
             $('#list').append('<p data-id=' + task.id + '><input class="checkbox active" type="checkbox" />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           }
         });
+        $('#itemNum').html($('#list p').length);
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -178,6 +180,7 @@ $(document).ready(function() {
             $('#list').append('<p data-id=' + task.id + '><input class="checkbox completed" type="checkbox" checked/>' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           }
         });
+        $('#itemNum').html($('#list p').length);
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -185,5 +188,18 @@ $(document).ready(function() {
     }); 
   });
 
+  // Clear completed tasks by clicking "Clear Completed" button
+  $(document).on('click', '#clearCompletedBtn', function() {
+    var completedIds = [];
+    $('#list p').each(function(i, ele) {
+      if ($(ele).children('input').hasClass('completed') == true) {
+        completedIds.push($(ele).attr('data-id'));
+      };
+    });
+    completedIds.forEach(function(id) {
+      deleteTask(id);
+    });
+  });
+  
 
 });
