@@ -6,6 +6,7 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
+        $('#list').html("");
         var insertInput = function(status) {
           if (status == true) {
             return '<input class="checkbox completed" type="checkbox" checked/>';
@@ -104,7 +105,7 @@ $(document).ready(function() {
     });
   };
 
-  
+
   // Functions and Event Handlers
   // Get and render all tasks
   displayTasks();
@@ -128,6 +129,50 @@ $(document).ready(function() {
       $(this).removeClass('completed');
       $(this).addClass('active');
     }
+  });
+
+  // Filter the tasks by All/Active/Completed
+  // All
+  $(document).on('click', '#allBtn', displayTasks);
+
+  // Active
+  $(document).on('click', '#activeBtn', function() {
+    $.ajax({
+      type: 'GET',
+      url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
+      dataType: 'json',
+      success: function(response, textStatus) {
+        $('#list').html("");
+        response.tasks.forEach(function(task) {
+          if (task.completed == false) {
+            $('#list').append('<p data-id=' + task.id + '><input class="checkbox active" type="checkbox" />' + task.content + '<button class="deleteBtn">DELETE</button></P>');
+          }
+        });
+      },
+      error: function(request, textStatus, errorMessage) {
+        console.log(errorMessage);
+      }
+    }); 
+  });
+
+  // Completed
+  $(document).on('click', '#CompletedBtn', function() {
+    $.ajax({
+      type: 'GET',
+      url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
+      dataType: 'json',
+      success: function(response, textStatus) {
+        $('#list').html("");
+        response.tasks.forEach(function(task) {
+          if (task.completed == true) {
+            $('#list').append('<p data-id=' + task.id + '><input class="checkbox completed" type="checkbox" checked/>' + task.content + '<button class="deleteBtn">DELETE</button></P>');
+          }
+        });
+      },
+      error: function(request, textStatus, errorMessage) {
+        console.log(errorMessage);
+      }
+    }); 
   });
 
 
