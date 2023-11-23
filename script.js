@@ -1,4 +1,14 @@
 $(document).ready(function() {
+  // Set the date
+  var showDate = function() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var day = now.getDate();
+    return year + "/" + month + "/" + day;
+  };
+  document.getElementById('date').innerHTML = showDate();
+
   // GET tasks
   var displayTasks = function() {
     $.ajax({
@@ -15,7 +25,7 @@ $(document).ready(function() {
           };
         };
         response.tasks.forEach(function(task) {
-          $('#list').append('<p data-id=' + task.id + '>' + insertInput(task.completed) + task.content + '<button class="deleteBtn">DELETE</button></P>');
+          $('#list').append('<p data-id=' + task.id + '>' + insertInput(task.completed) + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
         });
       },
       error: function(request, textStatus, errorMessage) {
@@ -38,7 +48,7 @@ $(document).ready(function() {
           }
         }),
         success: function(response, textStatus) {
-          $('#list').append('<p data-id=' + response.task.id + '><input class="checkbox active" type="checkbox" />' + response.task.content + '<button class="deleteBtn">DELETE</button></P>');
+          $('#list').append('<p data-id=' + response.task.id + '><input class="checkbox active" type="checkbox" />' + response.task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           $('#newTask').val("");
         },
         error: function(request, textStatus, errorMessage) {
@@ -145,7 +155,7 @@ $(document).ready(function() {
         $('#list').html("");
         response.tasks.forEach(function(task) {
           if (task.completed == false) {
-            $('#list').append('<p data-id=' + task.id + '><input class="checkbox active" type="checkbox" />' + task.content + '<button class="deleteBtn">DELETE</button></P>');
+            $('#list').append('<p data-id=' + task.id + '><input class="checkbox active" type="checkbox" />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           }
         });
       },
@@ -165,7 +175,7 @@ $(document).ready(function() {
         $('#list').html("");
         response.tasks.forEach(function(task) {
           if (task.completed == true) {
-            $('#list').append('<p data-id=' + task.id + '><input class="checkbox completed" type="checkbox" checked/>' + task.content + '<button class="deleteBtn">DELETE</button></P>');
+            $('#list').append('<p data-id=' + task.id + '><input class="checkbox completed" type="checkbox" checked/>' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           }
         });
       },

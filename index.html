@@ -12,21 +12,26 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="script.js"></script>
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/fe1102712b.js" crossorigin="anonymous"></script>
   <title>To Do List</title>
 </head>
 <body>
   <h1>To Do List</h1>
-  <div>
-    <h3>Date</h3>
-    <input id="newTask" type="text" placeholder="What needs to be done?" />
-    <button id="addBtn">Add</button>
+  <h3><span id="date"></span></h3>
+  <div class="container">
+    <div id="addTask">
+      <input id="newTask" type="text" placeholder="What needs to be done?" />
+      <i class="fa-solid fa-plus" id="addBtn"></i>
+    </div>
   </div>
-  <div>
-    <h3>Filter the Tasks by...</h3>
+
+  <div class="container">
+    <h4>Filter the Tasks by...</h4>
     <button id="allBtn">All</button>
     <button id="activeBtn">Active</button>
     <button id="CompletedBtn">Completed</button>
+    <div id="list"></div>
   </div>
-  <div id="list"></div>
 </body>
 </html>

@@ -1,3 +1,70 @@
+body {
+  background-color: coral;
+  font-family: Courier;
+  text-align: center;
+}
+
+h1 {
+  color: white;
+  font-size: 40px;
+}
+
+.container {
+  border: 2px solid black;
+  border-radius: 20px;
+  background-color: white;
+  padding: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+}
+
+#addTask {
+  height: 30px;
+  border-bottom: 1px solid gray;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+#newTask {
+  width: 90%;
+  border: none;
+  outline: none;
+}
+
+#newTask::placeholder {
+  text-align: center;
+  font-size: 15px;
+}
+
+button {
+  border-radius: 5px;
+  padding: 2px 10px;
+  color: coral;
+  border-color: coral;
+  background-color: white;
+  box-shadow: 2px 2px gray;
+}
+
+button:active {
+  box-shadow: none;
+  transform: translateY(5px);
+}
+
+#list {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+#list p {
+  text-align: left;
+  border-bottom: 1px solid gray;
+}
+
 p:has(input.completed) {
   text-decoration: line-through;
+}
+
+.deleteBtn {
+  float: right;
 }
