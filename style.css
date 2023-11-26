@@ -51,6 +51,11 @@ button:active {
   transform: translateY(5px);
 }
 
+#clearCompletedBtn {
+  color: gray;
+  border-color: gray;
+}
+
 #list {
   margin-left: 10%;
   margin-right: 10%;

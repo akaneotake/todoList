@@ -123,6 +123,12 @@ $(document).ready(function() {
 
   // Add a new task by clicking add button
   $('#addBtn').on('click', addTask);
+  $('#newTask').keypress(function(e) {
+    if (e.which === 13) {
+      addTask();
+    }
+  });
+  
 
   // Delete the task by clicking delete button
   $(document).on('click', '.deleteBtn', function() {
@@ -203,3 +209,6 @@ $(document).ready(function() {
   
 
 });
+
+
+// アイテムをid順に並べる
