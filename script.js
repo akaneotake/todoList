@@ -17,15 +17,8 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(response, textStatus) {
         $('#list').empty();
-        var insertInput = function(status) {
-          if (status == true) {
-            return '<input class="checkbox completed" type="checkbox" checked/>';
-          } else {
-            return '<input class="checkbox active" type="checkbox" />';
-          };
-        };
         response.tasks.forEach(function(task) {
-          $('#list').append('<p data-id=' + task.id + '>' + insertInput(task.completed) + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
+          $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox ' + (task.completed?'completed' : 'active') + '" ' + (task.completed?'checked' : '') + ' />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
         });
         $('#itemNum').html($('#list p').length);
       },
@@ -65,8 +58,7 @@ $(document).ready(function() {
       type: 'DELETE',
       url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '?api_key=1090',
       success: function(response, textStatus) {
-        $('#list [data-id=' + id + ']').remove();
-        $('#itemNum').html($('#list p').length);
+        displayTasks();
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -82,7 +74,7 @@ $(document).ready(function() {
       contentType: 'application/json',
       dataType: 'json',
       success: function(response, textStatus) {
-        console.log(response);
+        displayTasks();
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -98,7 +90,7 @@ $(document).ready(function() {
       contentType: 'application/json',
       dataType: 'json',
       success: function(response, textStatus) {
-        console.log(response);
+        displayTasks();
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -107,9 +99,6 @@ $(document).ready(function() {
   };
 
   // Functions and Event Handlers
-  // Get and render all tasks
-  displayTasks();
-
   // Add a new task by clicking add button
   $('#addBtn').on('click', addTask);
   $('#newTask').keypress(function(e) {
@@ -127,12 +116,8 @@ $(document).ready(function() {
   $(document).on('change', '.checkbox', function() {
     if (this.checked) {
       markCompleted($(this).parent('p').data('id'));
-      $(this).removeClass('active');
-      $(this).addClass('completed');
     } else {
       returnActive($(this).parent('p').data('id'));
-      $(this).removeClass('completed');
-      $(this).addClass('active');
     }
   });
 
@@ -194,8 +179,9 @@ $(document).ready(function() {
       deleteTask(id);
     });
   });
-  
 
+  // Get and render all tasks
+  displayTasks();
 });
 
 
