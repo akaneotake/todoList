@@ -17,7 +17,9 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(response, textStatus) {
         $('#list').empty();
-        response.tasks.forEach(function(task) {
+        response.tasks.sort(function(a, b) {
+          return a.id - b.id;
+        }).forEach(function(task) {
           $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox ' + (task.completed?'completed' : 'active') + '" ' + (task.completed?'checked' : '') + ' />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
         });
         $('#itemNum').html($('#list p').length);
@@ -184,9 +186,5 @@ $(document).ready(function() {
   displayTasks();
 });
 
-
-// Addボタンの送信イベントにはclick？submit？？
-
-// .html('') → .empty()
-// DELETEのdataType省略
-// markCompleted()とreturnActive()のdata:省略
+// completed/activeタスクの表示にajaxリクエスト必要？
+// All/completed/active表示中のボタン背景
