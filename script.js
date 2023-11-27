@@ -16,6 +16,8 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
+        $('#activeBtn, #CompletedBtn').css('background-color', '');
+        $('#allBtn').css('background-color', 'lightgray');
         $('#list').empty();
         response.tasks.sort(function(a, b) {
           return a.id - b.id;
@@ -125,19 +127,25 @@ $(document).ready(function() {
 
   // Filter the tasks by All/Active/Completed
   // All
-  $(document).on('click', '#allBtn', displayTasks);
+  $(document).on('click', '#allBtn', function() {
+    $('#activeBtn, #CompletedBtn').css('background-color', '');
+        $('#allBtn').css('background-color', 'lightgray');
+    displayTasks();
+  });
 
   // Active
-  $(document).on('click', '#activeBtn', function() {
+  $(document).on('click', '#activeBtn', function() {    
     $.ajax({
       type: 'GET',
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
+        $('#allBtn, #CompletedBtn').css('background-color', '');
+        $('#activeBtn').css('background-color', 'lightgray');
         $('#list').empty();
         response.tasks.forEach(function(task) {
           if (task.completed == false) {
-            $('#list').append('<p data-id=' + task.id + '><input class="checkbox active" type="checkbox" />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
+            $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox active" />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           }
         });
         $('#itemNum').html($('#list p').length);
@@ -147,7 +155,7 @@ $(document).ready(function() {
       }
     }); 
   });
-
+    
   // Completed
   $(document).on('click', '#CompletedBtn', function() {
     $.ajax({
@@ -155,10 +163,12 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
+        $('#allBtn, #activeBtn').css('background-color', '');
+        $('#CompletedBtn').css('background-color', 'lightgray');
         $('#list').empty();
         response.tasks.forEach(function(task) {
           if (task.completed == true) {
-            $('#list').append('<p data-id=' + task.id + '><input class="checkbox completed" type="checkbox" checked/>' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
+            $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox completed" checked/>' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
           }
         });
         $('#itemNum').html($('#list p').length);
@@ -185,6 +195,3 @@ $(document).ready(function() {
   // Get and render all tasks
   displayTasks();
 });
-
-// completed/activeタスクの表示にajaxリクエスト必要？
-// All/completed/active表示中のボタン背景
