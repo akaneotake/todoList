@@ -16,7 +16,7 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
-        $('#list').html("");
+        $('#list').empty();
         var insertInput = function(status) {
           if (status == true) {
             return '<input class="checkbox completed" type="checkbox" checked/>';
@@ -64,7 +64,6 @@ $(document).ready(function() {
     $.ajax({
       type: 'DELETE',
       url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '?api_key=1090',
-      dataType: 'json',
       success: function(response, textStatus) {
         $('#list [data-id=' + id + ']').remove();
         $('#itemNum').html($('#list p').length);
@@ -82,11 +81,6 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '/mark_complete?api_key=1090',
       contentType: 'application/json',
       dataType: 'json',
-      data: JSON.stringify({
-        task: {
-          completed: true
-        }
-      }),
       success: function(response, textStatus) {
         console.log(response);
       },
@@ -103,11 +97,6 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '/mark_active?api_key=1090',
       contentType: 'application/json',
       dataType: 'json',
-      data: JSON.stringify({
-        task: {
-          completed: false
-        }
-      }),
       success: function(response, textStatus) {
         console.log(response);
       },
@@ -129,7 +118,6 @@ $(document).ready(function() {
     }
   });
   
-
   // Delete the task by clicking delete button
   $(document).on('click', '.deleteBtn', function() {
     deleteTask($(this).parent('p').data('id'));
@@ -159,7 +147,7 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
-        $('#list').html("");
+        $('#list').empty();
         response.tasks.forEach(function(task) {
           if (task.completed == false) {
             $('#list').append('<p data-id=' + task.id + '><input class="checkbox active" type="checkbox" />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
@@ -180,7 +168,7 @@ $(document).ready(function() {
       url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
       dataType: 'json',
       success: function(response, textStatus) {
-        $('#list').html("");
+        $('#list').empty();
         response.tasks.forEach(function(task) {
           if (task.completed == true) {
             $('#list').append('<p data-id=' + task.id + '><input class="checkbox completed" type="checkbox" checked/>' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
@@ -211,4 +199,8 @@ $(document).ready(function() {
 });
 
 
-// アイテムをid順に並べる
+// Addボタンの送信イベントにはclick？submit？？
+
+// .html('') → .empty()
+// DELETEのdataType省略
+// markCompleted()とreturnActive()のdata:省略
