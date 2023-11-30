@@ -8,8 +8,9 @@ $(document).ready(function() {
     return year + "/" + month + "/" + day;
   };
   document.getElementById('date').innerHTML = showDate();
-
+  
   // GET tasks
+  var filterState = "all";
   var displayTasks = function() {
     $.ajax({
       type: 'GET',
@@ -19,12 +20,26 @@ $(document).ready(function() {
         $('#activeBtn, #CompletedBtn').css('background-color', '');
         $('#allBtn').css('background-color', 'lightgray');
         $('#list').empty();
-        response.tasks.sort(function(a, b) {
-          return a.id - b.id;
-        }).forEach(function(task) {
-          $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox ' + (task.completed?'completed' : 'active') + '" ' + (task.completed?'checked' : '') + ' />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
-        });
-        $('#itemNum').html($('#list p').length);
+        response.tasks.filter(function(task) {
+          if (filterState === "all") {
+            $('#activeBtn, #CompletedBtn').css('background-color', '');
+            $('#allBtn').css('background-color', 'lightgray');
+            return true;
+          } else if (filterState === "active") {
+            $('#allBtn, #CompletedBtn').css('background-color', '');
+            $('#activeBtn').css('background-color', 'lightgray');
+            return task.completed === false;
+          } else if (filterState === "completed") {
+            $('#allBtn, #activeBtn').css('background-color', '');
+            $('#CompletedBtn').css('background-color', 'lightgray');
+            return task.completed === true;
+          }
+        }).sort(function(a, b) {
+        return a.id - b.id;
+      }).forEach(function(task) {
+        $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox ' + (task.completed?'completed' : 'active') + '" ' + (task.completed?'checked' : '') + ' />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
+      });
+      $('#itemNum').html($('#list p').length);
       },
       error: function(request, textStatus, errorMessage) {
         console.log(errorMessage);
@@ -128,55 +143,20 @@ $(document).ready(function() {
   // Filter the tasks by All/Active/Completed
   // All
   $(document).on('click', '#allBtn', function() {
-    $('#activeBtn, #CompletedBtn').css('background-color', '');
-        $('#allBtn').css('background-color', 'lightgray');
+    filterState = "all";
     displayTasks();
   });
 
   // Active
   $(document).on('click', '#activeBtn', function() {    
-    $.ajax({
-      type: 'GET',
-      url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
-      dataType: 'json',
-      success: function(response, textStatus) {
-        $('#allBtn, #CompletedBtn').css('background-color', '');
-        $('#activeBtn').css('background-color', 'lightgray');
-        $('#list').empty();
-        response.tasks.forEach(function(task) {
-          if (task.completed == false) {
-            $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox active" />' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
-          }
-        });
-        $('#itemNum').html($('#list p').length);
-      },
-      error: function(request, textStatus, errorMessage) {
-        console.log(errorMessage);
-      }
-    }); 
+    filterState = "active";
+    displayTasks();
   });
     
   // Completed
   $(document).on('click', '#CompletedBtn', function() {
-    $.ajax({
-      type: 'GET',
-      url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=1090',
-      dataType: 'json',
-      success: function(response, textStatus) {
-        $('#allBtn, #activeBtn').css('background-color', '');
-        $('#CompletedBtn').css('background-color', 'lightgray');
-        $('#list').empty();
-        response.tasks.forEach(function(task) {
-          if (task.completed == true) {
-            $('#list').append('<p data-id=' + task.id + '><input type="checkbox" class="checkbox completed" checked/>' + task.content + '<i class="fa-regular fa-trash-can deleteBtn"></i></P>');
-          }
-        });
-        $('#itemNum').html($('#list p').length);
-      },
-      error: function(request, textStatus, errorMessage) {
-        console.log(errorMessage);
-      }
-    }); 
+    filterState = "completed";
+    displayTasks();
   });
 
   // Clear completed tasks by clicking "Clear Completed" button
